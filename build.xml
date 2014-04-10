@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="DaticalDB4CARA" default="dist" basedir=".">
+
+	<property name="src" location="src" />
+	<property name="dist" location="C:/dev/CA/ReleaseAutomationServer/uploadActions" />
+
+	<target name="dist" description="generate the distribution">
+		<buildnumber />
+
+		<property file="build.number" />
+		<echo>build.number=${build.number}</echo>
+
+		<zip destfile="${dist}/${ant.project.name}-1.0.${build.number}.jar" basedir="bin" excludes=".git/*,**/dist,dist/*" />
+	</target>
+
+</project>

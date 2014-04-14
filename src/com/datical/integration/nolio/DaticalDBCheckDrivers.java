@@ -51,10 +51,19 @@ public class DaticalDBCheckDrivers implements NolioAction {
 	@Override
 	public ActionResult executeAction() {
 
+		
+		
+		_log.warn("My custom log message");
+		
+
+		
 		String output = "";
 		try {
+			_log.info("Starting Datical DB.");
 			Process p = new ProcessBuilder(daticalDBLocation, "--project", daticalDBProjectDirectory, "checkdrivers").start();
+			_log.info("Waiting for Datical DB to complete.");
 			p.waitFor();
+			_log.info("Datical DB completed.");
 			BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
 			while ((output = b.readLine()) != null) {
@@ -62,10 +71,10 @@ public class DaticalDBCheckDrivers implements NolioAction {
 			}
 
 		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			_log.error(e.toString());
 		}
 
+		_log.info(daticalDBOutput);
 		return new ActionResult(true, daticalDBOutput);
 
 	}

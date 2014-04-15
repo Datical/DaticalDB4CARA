@@ -2,15 +2,22 @@
 <project name="DaticalDB4CARA" default="dist" basedir=".">
 
 	<property name="src" location="src" />
-	<property name="dist" location="C:/dev/CA/ReleaseAutomationServer/uploadActions" />
+	<property name="dist" location="dist" />
 
-	<target name="dist" description="generate the distribution">
+	<target name="dist" depends="clean.dist" description="generate the distribution">
 		<buildnumber />
 
 		<property file="build.number" />
 		<echo>build.number=${build.number}</echo>
 
+		
+		
 		<zip destfile="${dist}/${ant.project.name}-1.0.${build.number}.jar" basedir="bin" excludes=".git/*,**/dist,dist/*" />
+	</target>
+	
+	<target name="clean.dist" description="clean up">
+		<delete dir="${dist}" />
+		<mkdir dir="${dist}"/>
 	</target>
 
 </project>

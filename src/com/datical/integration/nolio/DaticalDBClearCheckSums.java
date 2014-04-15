@@ -6,7 +6,7 @@ import com.nolio.platform.shared.api.NolioAction;
 @ActionDescriptor(
 		name = "Datical DB Clear Check Sums", 
 		description = "This action clears ChangeSet Check Sums located in Database ChangeLog Table.", 
-		category = "Datical.Clear Check Sums")
+		category = "Datical")
 
 public class DaticalDBClearCheckSums extends DaticalDBActionWithTarget implements NolioAction {
 

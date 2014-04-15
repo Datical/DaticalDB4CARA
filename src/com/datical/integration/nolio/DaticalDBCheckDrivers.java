@@ -4,9 +4,9 @@ import com.nolio.platform.shared.api.ActionDescriptor;
 import com.nolio.platform.shared.api.NolioAction;
 
 @ActionDescriptor(
-		name = "Datical DB Check Drivers Action", 
-		description = "This action verified that Datical DB can access the correct database drivers.", 
-		category = "Datical.Check Drivers")
+		name = "Datical DB Check Drivers", 
+		description = "This action verifies Datical DB can locate the database drivers.", 
+		category = "Datical")
 
 public class DaticalDBCheckDrivers extends DaticalDBActionWithoutTarget implements NolioAction {
 	

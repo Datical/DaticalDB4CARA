@@ -4,9 +4,9 @@ import com.nolio.platform.shared.api.ActionDescriptor;
 import com.nolio.platform.shared.api.NolioAction;
 
 @ActionDescriptor(
-		name = "Datical DB Forecast Action", 
+		name = "Datical DB Forecast", 
 		description = "This action forecasts changes in the ChangeLog file to the Target Database.", 
-		category = "Datical.Forecast")
+		category = "Datical")
 
 public class DaticalDBForecast extends DaticalDBActionWithTarget implements NolioAction{
 	

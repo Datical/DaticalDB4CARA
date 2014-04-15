@@ -6,7 +6,7 @@ import com.nolio.platform.shared.api.NolioAction;
 @ActionDescriptor(
 		name = "Datical DB Deploy", 
 		description = "This action deploys changes in the ChangeLog file to the Target Database.", 
-		category = "Datical.Deploy")
+		category = "Datical")
 
 public class DaticalDBDeploy extends DaticalDBActionWithTarget implements NolioAction{
 

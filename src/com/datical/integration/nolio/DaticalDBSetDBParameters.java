@@ -15,7 +15,7 @@ import com.nolio.platform.shared.api.ParameterDescriptor;
 import com.nolio.platform.shared.api.Password;
 
 @ActionDescriptor(
-		name = "Set Datical DB Parameters",
+		name = "Datical DB Set Project Parameters",
 		description = "This will create and set parameters for Datical DB execution. Useful for when you only have a Datical DB changelog.xml file or simply do not want to create a datical.project file using the GUI.",
 		category="Datical")
 

@@ -272,15 +272,15 @@ public class DaticalDBSetDBParameters implements NolioAction {
 		
 		// input validation
 		String daticalDBRef = "";
-		if (daticalDBVendor.equals("Oracle") ) {
+		if (daticalDBVendor.toString().equals("Oracle") ) {
 			daticalDBRef = "OracleDbDef";
-		} else if (daticalDBVendor.equals("MSSQL")) {
+		} else if (daticalDBVendor.toString().equals("MSSQL")) {
 			daticalDBRef = "SqlServerDbDef";
-		} else if (daticalDBVendor.equals("MySQL")) {
+		} else if (daticalDBVendor.toString().equals("MySQL")) {
 			daticalDBRef = "MysqlDbDef";
-		} else if (daticalDBVendor.equals("PostgreSQL")) {
+		} else if (daticalDBVendor.toString().equals("PostgreSQL")) {
 			daticalDBRef = "PostgresqlDbDef";
-		} else if (daticalDBVendor.equals("DB2")){
+		} else if (daticalDBVendor.toString().equals("DB2")){
 			daticalDBRef = "Db2DbDef";
 		} else {
 			return new ActionResult(false, "Invalid value for Datical DB Vendor: " + daticalDBVendor.toString()); 

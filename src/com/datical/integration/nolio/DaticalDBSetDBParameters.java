@@ -271,14 +271,6 @@ public class DaticalDBSetDBParameters implements NolioAction {
 	// get the out done
 	
 	@ParameterDescriptor(
-			name = "Welcome String",
-			description = "Welcome greeting",
-			out = true,
-			in = false)
-	private String welcomeString;
-
-	
-	@ParameterDescriptor(
 			name = "Datical DB Location Output", 
 			description = "Fully qualified path to Datical DB CLI installation as Output Parameter.", 
 			out = true, 

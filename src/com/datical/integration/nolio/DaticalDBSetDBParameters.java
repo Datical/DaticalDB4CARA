@@ -139,7 +139,6 @@ public class DaticalDBSetDBParameters implements NolioAction {
 
 	@ParameterDescriptor(
 			// port
-			// TODO: figure out how to mask this
 			name = "Datical DB Database Password",
 			description = "The password of the Database Server.",
 			out = false,
@@ -292,7 +291,6 @@ public class DaticalDBSetDBParameters implements NolioAction {
 				return new ActionResult(false, "For Database Vendor " + daticalDBVendor.toString() + ", Datical DB Database Name is required."); 
 			}
 		}
-		// TODO: note that for MySQL, PostgreSQL, DB2 "database foo" and for MSSQL "databaseName foo"
 
 		if (daticalDBVendor.equals("Oracle")) {
 			if (daticalDBSID.equals("") && daticalDBServiceName.equals("")) {
@@ -383,7 +381,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			_log.info("Starting Datical DB.");
 			Process p2 = new ProcessBuilder(command).start();			
 			_log.info("Waiting for Datical DB to complete.");
-			p.waitFor();
+			p2.waitFor();
 			_log.info("Datical DB completed.");
 
 
@@ -392,6 +390,11 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
 			String line;
+			while ((line = b.readLine()) != null) {
+				daticalDBOutput = daticalDBOutput + "\n" + line;
+			}
+			
+			b = new BufferedReader(new InputStreamReader(p2.getInputStream()));
 			while ((line = b.readLine()) != null) {
 				daticalDBOutput = daticalDBOutput + "\n" + line;
 			}

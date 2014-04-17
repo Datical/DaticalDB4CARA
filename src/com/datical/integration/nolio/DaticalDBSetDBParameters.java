@@ -91,7 +91,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 
 	@ParameterDescriptor(
 			// name
-			name = "Datical DB Database Name",
+			name = "Datical DB Step Name",
 			description = "This is an Internal user friendly name for your database.",
 			out = false,
 			in = true,
@@ -268,28 +268,9 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			)    
 	private String daticalDBInstanceName = "";
 	
-	// get the out done
-	
-	@ParameterDescriptor(
-			name = "Datical DB Location Output", 
-			description = "Fully qualified path to Datical DB CLI installation as Output Parameter.", 
-			out = true, 
-			in = false)
-	private String daticalDBLocationOutput;
-
-	@ParameterDescriptor(
-			name = "Datical DB Project Directory Output", 
-			description = "The Datical DB Project Directory as Output Parameter.", 
-			out = true, 
-			in = false)
-	private String daticalDBProjectDirectoryOutput;
-	
 	@Override
 	public ActionResult executeAction() {
 		
-		daticalDBLocationOutput = daticalDBLocation;
-		daticalDBProjectDirectoryOutput = daticalDBProjectDirectory;
-
 		// input validation
 		String daticalDBRef = "";
 		if (daticalDBVendor.equals("Oracle") ) {

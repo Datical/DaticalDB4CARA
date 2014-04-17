@@ -85,7 +85,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = false,
 			defaultValueAsString = "Oracle",
-			order = 1
+			order = 3
 			)    
 	private DaticalDBVendor daticalDBVendor = DaticalDBVendor.Oracle;
 
@@ -97,7 +97,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = false,
 			defaultValueAsString = "MyDB",
-			order = 2
+			order = 4
 			)    
 	private String daticalDBStepName = "MyDB";
 
@@ -109,7 +109,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = false,
 			defaultValueAsString = "192.168.0.1",
-			order = 3
+			order = 5
 			)    
 	private String daticalDBHost = "192.168.0.1";
 
@@ -121,7 +121,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = false,
 			defaultValueAsString = "1521",
-			order = 4
+			order = 6
 			)    
 	private String daticalDBPort = "1521";
 
@@ -133,7 +133,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = false,
 			defaultValueAsString = "scott",
-			order = 5
+			order = 7
 			)    
 	private String daticalDBUsername = "scott";
 
@@ -146,7 +146,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = false,
 			defaultValueAsString = "tiger",
-			order = 6
+			order = 8
 			)    
 	private Password daticalDBPassword = new Password("tiger");
 
@@ -160,7 +160,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = true,
 			defaultValueAsString = "",
-			order = 7
+			order = 9
 			)    
 	private String daticalDBContext = "";
 
@@ -172,7 +172,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = true,
 			defaultValueAsString = "",
-			order = 8
+			order = 10
 			)    
 	private String daticalDBDefaultSchemaName = "";
 	
@@ -184,7 +184,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = true,
 			defaultValueAsString = "",
-			order = 9
+			order = 11
 			)    
 	private String daticalDBDefaultCatalogName = "";
 	
@@ -200,7 +200,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = true,
 			defaultValueAsString = "",
-			order = 10
+			order = 12
 			)    
 	private String daticalDBDatabaseName = "";
 	
@@ -213,7 +213,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = true,
 			defaultValueAsString = "",
-			order = 11
+			order = 13
 			)    
 	private String daticalDBSID = "";
 	
@@ -225,7 +225,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = true,
 			defaultValueAsString = "",
-			order = 12
+			order = 14
 			)    
 	private String daticalDBServiceName = "";
 	
@@ -240,7 +240,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = true,
 			defaultValueAsString = "",
-			order = 13
+			order = 15
 			)  
 	private DaticalDBBinary daticalDBIsIntegratedSecurity = null;
 	
@@ -252,7 +252,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = true,
 			defaultValueAsString = "",
-			order = 12
+			order = 16
 			)    
 	private String daticalDBApplicationName = "";
 	
@@ -264,7 +264,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = true,
 			defaultValueAsString = "",
-			order = 12
+			order = 17
 			)    
 	private String daticalDBInstanceName = "";
 	

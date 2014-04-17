@@ -8,7 +8,7 @@ import com.nolio.platform.shared.api.NolioAction;
 		description = "This action forecasts changes in the ChangeLog file to the Target Database.", 
 		category = "Datical")
 
-public class DaticalDBForecast extends DaticalDBActionWithTarget implements NolioAction{
+public class DaticalDBForecast extends DaticalDBActionWithTargetAndReportOutput implements NolioAction{
 	
 	private static final long serialVersionUID = 8990231613237623473L;
 

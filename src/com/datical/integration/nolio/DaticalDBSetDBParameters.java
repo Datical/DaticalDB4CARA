@@ -3,8 +3,16 @@ package com.datical.integration.nolio;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.nolio.platform.shared.api.*;
+import com.datical.integration.nolio.util.DaticalDBBinary;
+import com.datical.integration.nolio.util.DaticalDBVendor;
+import com.nolio.platform.shared.api.ActionDescriptor;
+import com.nolio.platform.shared.api.ActionResult;
+import com.nolio.platform.shared.api.NolioAction;
+import com.nolio.platform.shared.api.ParameterDescriptor;
+import com.nolio.platform.shared.api.Password;
 
 @ActionDescriptor(
 		name = "Hello Action",
@@ -14,7 +22,6 @@ import com.nolio.platform.shared.api.*;
 public class DaticalDBSetDBParameters implements NolioAction {
 	
 	private static final long serialVersionUID = 3914890651882009063L;
-
 
 	@ParameterDescriptor(
 			name = "Datical DB Location", 
@@ -36,18 +43,16 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			order = 2)
 	private String daticalDBProjectDirectory = "C:\\Users\\robert\\datical\\BigProject";
 	
-	
-	
 //	Base properties	 
 //	•	name 				(REQUIRED) 		done
 //	•	driver 				(AUTOMATIC)		N/A
 //	•	hostname 			(REQUIRED)		done
-//	•	port 				(REQUIRED)
-//	•	username (REQUIRED)
-//	•	password (REQUIRED)
-//	•	contexts (OPTIONAL)
-//	•	defaultSchemaName (OPTIONAL)
-//	•	defaultCatalogName (OPTIONAL)
+//	•	port 				(REQUIRED)		done
+//	•	username 			(REQUIRED)		done
+//	•	password 			(REQUIRED)		done
+//	•	contexts 			(OPTIONAL)		done
+//	•	defaultSchemaName 	(OPTIONAL)		done
+//	•	defaultCatalogName	(OPTIONAL)		done
 //	MySQLDbDef
 //		database (REQUIRED)
 //	PostgresDbDef
@@ -65,10 +70,9 @@ public class DaticalDBSetDBParameters implements NolioAction {
 
 
 	//hammer newDbDef DbDefClass OracleDbDef name target1 database petshop sid orcl username r2 password shredder hostname proddb1.datical.net
-	
-
+		 	
 	@ParameterDescriptor(
-			// TODO: Convert to ENUM
+
 //			MysqlDbDef
 //			SqlServerDbDef
 //			OracleDbDef
@@ -83,7 +87,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			defaultValueAsString = "Oracle",
 			order = 1
 			)    
-	private String daticalDBVendor = "oracle";
+	private DaticalDBVendor daticalDBVendor = DaticalDBVendor.Oracle;
 
 	@ParameterDescriptor(
 			// name
@@ -93,7 +97,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = false,
 			defaultValueAsString = "MyDB",
-			order = 1
+			order = 2
 			)    
 	private String daticalDBStepName = "MyDB";
 
@@ -105,7 +109,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = false,
 			defaultValueAsString = "192.168.0.1",
-			order = 1
+			order = 3
 			)    
 	private String daticalDBHost = "192.168.0.1";
 
@@ -117,7 +121,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = false,
 			defaultValueAsString = "1521",
-			order = 1
+			order = 4
 			)    
 	private String daticalDBPort = "1521";
 
@@ -129,14 +133,142 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = true,
 			nullable = false,
 			defaultValueAsString = "scott",
-			order = 1
+			order = 5
 			)    
 	private String daticalDBUsername = "scott";
 
-	
-		
+	@ParameterDescriptor(
+			// port
+			// TODO: figure out how to mask this
+			name = "Datical DB Database Password",
+			description = "The password of the Database Server.",
+			out = false,
+			in = true,
+			nullable = false,
+			defaultValueAsString = "tiger",
+			order = 6
+			)    
+	private Password daticalDBPassword = new Password("tiger");
 
+	// optional
+
+	@ParameterDescriptor(
+			// context
+			name = "Datical DB Context",
+			description = "The Context used by Datical DB. Optional.",
+			out = false,
+			in = true,
+			nullable = true,
+			defaultValueAsString = "",
+			order = 7
+			)    
+	private String daticalDBContext = "";
+
+	@ParameterDescriptor(
+			// defaultSchemaName
+			name = "Datical DB Default Schema Name",
+			description = "The Default Schema Name used by Datical DB. Optional.",
+			out = false,
+			in = true,
+			nullable = true,
+			defaultValueAsString = "",
+			order = 8
+			)    
+	private String daticalDBDefaultSchemaName = "";
 	
+	@ParameterDescriptor(
+			// defaultCatalogName
+			name = "Datical DB Default Catalog Name",
+			description = "The Default Catalog Name used by Datical DB. Optional.",
+			out = false,
+			in = true,
+			nullable = true,
+			defaultValueAsString = "",
+			order = 9
+			)    
+	private String daticalDBDefaultCatalogName = "";
+	
+	// platform specific
+
+	// DB2, MySQL, PostgreSQL
+	
+	@ParameterDescriptor(
+			// database
+			name = "Datical DB Database Name (DB2, MSSQL, MySQL, PostgreSQL)",
+			description = "The Database Name. Required for DB2, MySQL, PostgreSQL.",
+			out = false,
+			in = true,
+			nullable = true,
+			defaultValueAsString = "",
+			order = 10
+			)    
+	private String daticalDBDatabaseName = "";
+	
+	// Oracle
+	@ParameterDescriptor(
+			// sid
+			name = "Datical DB SID (Oracle)",
+			description = "The Database SID. Either SID or Service Name is required for Oracle.",
+			out = false,
+			in = true,
+			nullable = true,
+			defaultValueAsString = "",
+			order = 11
+			)    
+	private String daticalDBSID = "";
+	
+	@ParameterDescriptor(
+			// serviceName
+			name = "Datical DB Service Name (Oracle)",
+			description = "The Database Service Name. Either SID or Service Name is required for Oracle.",
+			out = false,
+			in = true,
+			nullable = true,
+			defaultValueAsString = "",
+			order = 12
+			)    
+	private String daticalDBServiceName = "";
+	
+	
+	// MSSQL
+
+	@ParameterDescriptor(
+			// isIntegratedSecurity
+			name = "Integrated Security? (MSSQL)",
+			description = "Determines if the database uses Integrated Security. Optional for MSSQL.",
+			out = false,
+			in = true,
+			nullable = true,
+			defaultValueAsString = "",
+			order = 13
+			)  
+	private DaticalDBBinary daticalDBIsIntegratedSecurity = null;
+	
+	@ParameterDescriptor(
+			// applicationName
+			name = "Datical DB Application Name (MSSQL)",
+			description = "The Datical DB Application Name. Optional for MSSQL.",
+			out = false,
+			in = true,
+			nullable = true,
+			defaultValueAsString = "",
+			order = 12
+			)    
+	private String daticalDBApplicationName = "";
+	
+	@ParameterDescriptor(
+			// instanceName
+			name = "Datical DB Instance Name (MSSQL)",
+			description = "The Datical DB Instance Name. Optional for MSSQL.",
+			out = false,
+			in = true,
+			nullable = true,
+			defaultValueAsString = "",
+			order = 12
+			)    
+	private String daticalDBInstanceName = "";
+	
+	// get the out done
 	
 	@ParameterDescriptor(
 			name = "Welcome String",
@@ -145,9 +277,128 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			in = false)
 	private String welcomeString;
 
+	
+	@ParameterDescriptor(
+			name = "Datical DB Location Output", 
+			description = "Fully qualified path to Datical DB CLI installation as Output Parameter.", 
+			out = true, 
+			in = false)
+	private String daticalDBLocationOutput;
+
+	@ParameterDescriptor(
+			name = "Datical DB Project Directory Output", 
+			description = "The Datical DB Project Directory as Output Parameter.", 
+			out = true, 
+			in = false)
+	private String daticalDBProjectDirectoryOutput;
+	
 	@Override
 	public ActionResult executeAction() {
+		
+		daticalDBLocationOutput = daticalDBLocation;
+		daticalDBProjectDirectoryOutput = daticalDBProjectDirectory;
 
+		// input validation
+		String daticalDBRef = "";
+		if (daticalDBVendor.equals("Oracle") ) {
+			daticalDBRef = "OracleDbDef";
+		} else if (daticalDBVendor.equals("MSSQL")) {
+			daticalDBRef = "SqlServerDbDef";
+		} else if (daticalDBVendor.equals("MySQL")) {
+			daticalDBRef = "MysqlDbDef";
+		} else if (daticalDBVendor.equals("PostgreSQL")) {
+			daticalDBRef = "PostgresqlDbDef";
+		} else if (daticalDBVendor.equals("DB2")){
+			daticalDBRef = "Db2DbDef";
+		} else {
+			return new ActionResult(false, "Invalid value for Datical DB Vendor: " + daticalDBVendor.toString()); 
+		}
+
+		if (daticalDBVendor.equals("MySQL") || daticalDBVendor.equals("PostgreSQL") || daticalDBVendor.equals("DB2") || daticalDBVendor.equals("MSSQL")) {
+			if (daticalDBDatabaseName.equals("")) {
+				return new ActionResult(false, "For Database Vendor " + daticalDBVendor.toString() + ", Datical DB Database Name is required."); 
+			}
+		}
+		// TODO: note that for MySQL, PostgreSQL, DB2 "database foo" and for MSSQL "databaseName foo"
+
+		if (daticalDBVendor.equals("Oracle")) {
+			if (daticalDBSID.equals("") && daticalDBServiceName.equals("")) {
+				return new ActionResult(false, "For Database Vendor " + daticalDBVendor.toString() + ", SID or Service Name is required.");
+			}
+		}
+
+		// build List command
+		List<String> command = new ArrayList();
+
+		command.add(daticalDBLocation);
+		command.add("--project");
+		command.add(daticalDBProjectDirectory); 
+		command.add("newDbDef"); 
+		command.add("DbDefClass"); 
+		command.add(daticalDBRef); 
+		command.add("name"); 
+		command.add(daticalDBStepName); 
+		command.add("username"); 
+		command.add(daticalDBUsername); 
+		command.add("password"); 
+		command.add(daticalDBPassword.toString()); 
+		command.add("hostname"); 
+		command.add(daticalDBHost); 
+		command.add("port"); 
+		command.add(daticalDBPort);
+
+		if (setParameter(daticalDBDatabaseName)) {
+			if (daticalDBVendor.equals("MSSQL")) {
+				command.add("databaseName");
+			} else {
+				command.add("database");
+			}
+			command.add(daticalDBDatabaseName);
+		}
+
+		if (setParameter(daticalDBSID)) {
+			command.add("sid");
+			command.add(daticalDBSID);
+		}
+
+		if (daticalDBIsIntegratedSecurity != null) {
+			if (setParameter(daticalDBIsIntegratedSecurity.toString())) {
+				command.add("isIntegratedSecurity");
+				command.add(daticalDBIsIntegratedSecurity.toString().toLowerCase());
+			}
+		}
+
+		if (setParameter(daticalDBApplicationName)) {
+			command.add("applicationname");
+			command.add(daticalDBApplicationName);
+		}
+
+		if (setParameter(daticalDBContext)) {
+			command.add("context");
+			command.add(daticalDBContext);
+		}
+
+		if (setParameter(daticalDBDefaultCatalogName)) {
+			command.add("defaultCatalogName");
+			command.add(daticalDBDefaultCatalogName);
+		}
+
+		if (setParameter(daticalDBDefaultSchemaName)) {
+			command.add("defaultSchemaName");
+			command.add(daticalDBDefaultSchemaName);
+		}
+
+		if (setParameter(daticalDBInstanceName)) {
+			command.add("instancename");
+			command.add(daticalDBInstanceName);
+		}
+
+		if (setParameter(daticalDBServiceName)) {
+			command.add("serviceName");
+			command.add(daticalDBServiceName);
+		}
+
+		// execution
 		String daticalDBOutput = "";
 		try {
 			_log.info("Starting Datical DB.");
@@ -155,6 +406,16 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			_log.info("Waiting for Datical DB to complete.");
 			p.waitFor();
 			_log.info("Datical DB completed.");
+
+			_log.info("Starting Datical DB.");
+			Process p2 = new ProcessBuilder(command).start();			
+			_log.info("Waiting for Datical DB to complete.");
+			p.waitFor();
+			_log.info("Datical DB completed.");
+
+
+
+
 			BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
 			String line;
@@ -167,8 +428,17 @@ public class DaticalDBSetDBParameters implements NolioAction {
 		}
 
 		_log.info(daticalDBOutput);
+
 		return new ActionResult(true, daticalDBOutput);
 
-	
+	}
+
+	private boolean setParameter(String parameter) {
+		
+		if (parameter.isEmpty() || parameter.equals("")) {
+			return false; 
+		} 
+		return true;
+		
 	}
 }

@@ -1,0 +1,108 @@
+package com.datical.integration.nolio;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import com.nolio.platform.shared.api.ActionResult;
+import com.nolio.platform.shared.api.NolioAction;
+import com.nolio.platform.shared.api.ParameterDescriptor;
+
+public abstract class DaticalDBActionWithTargetAndReportOutput implements NolioAction { 	
+
+	private String daticalDBAction = null;
+	public String getDaticalDBAction() {
+		return daticalDBAction;
+	}
+
+	public void setDaticalDBAction(String daticalDBAction) {
+		this.daticalDBAction = daticalDBAction;
+	}
+
+	private static final long serialVersionUID = 1L;
+
+	@ParameterDescriptor(
+			name = "Datical DB Location", 
+			description = "Fully qualified path to Datical DB CLI installation (e.g., C:\\DaticalDB\\repl\\hammer.bat or /usr/local/bin/DaticalDB/repl/hammer)", 
+			out = false, 
+			in = true, 
+			nullable = false,
+			defaultValueAsString = "C:\\DaticalDB-1.32.438\\repl\\hammer.bat", 
+			order = 1)
+	private String daticalDBLocation = "C:\\DaticalDB-1.32.438\\repl\\hammer.bat";
+
+	@ParameterDescriptor(
+			name = "Datical DB Project Directory", 
+			description = "The Datical DB Project Directory is the path location of your Datical DB Project folder. This will contain a datical.project file.", 
+			out = false, 
+			in = true, 
+			nullable = false, 
+			defaultValueAsString = "C:\\Users\\robert\\datical\\BigProject", 
+			order = 2)
+	private String daticalDBProjectDirectory = "C:\\Users\\robert\\datical\\BigProject";
+
+	@ParameterDescriptor(
+			name = "Datical DB Target Database", 
+			description = "The Target Database on which you wish to execute Datical DB. This name is contained in your Datical DB Deployment Plan.", 
+			out = false, 
+			in = true, 
+			nullable = false, 
+			defaultValueAsString = "MyDatabase", 
+			order = 2)
+	private String daticalDBTargetDatabase = "MyDatabase";
+	
+	@ParameterDescriptor(
+			name = "Datical DB Report Output", 
+			description = "Fully qualified Datical DB Report File Output Parameter.", 
+			out = true, 
+			in = false)
+	private String daticalDBReport;
+	
+	@ParameterDescriptor(
+			name = "Datical DB Report Directory Output", 
+			description = "Fully qualified path to Datical DB Report Output Parameter.", 
+			out = true, 
+			in = false)
+	private String daticalDBReportDir;
+	
+	public ActionResult executeAction() {
+
+		String daticalDBOutput = "";
+		try {
+			_log.info("Starting Datical DB.");
+			Process p = new ProcessBuilder(daticalDBLocation, "--project", daticalDBProjectDirectory, daticalDBAction, daticalDBTargetDatabase).start();			
+			_log.info("Waiting for Datical DB to complete.");
+			p.waitFor();
+			_log.info("Datical DB completed.");
+			BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+			String line;
+			while ((line = b.readLine()) != null) {
+				
+				
+				if (line.contains("Report ready at ")) {
+					//Report ready at C:\Users\robert\datical\BigProject\Reports\deploy_Dev_20140417_135821\deployReport.html
+					String myLine = line;
+					myLine = myLine.replace("Report ready at ", "");
+					myLine = myLine.replaceAll("(\\r|\\n)", "");
+					daticalDBReport = myLine;
+					myLine = myLine.replace("deployReport.html", "");
+					daticalDBReportDir = myLine;
+				}
+				
+				daticalDBOutput = daticalDBOutput + "\n" + line;
+			}
+
+		} catch (IOException | InterruptedException e) {
+			_log.error(e.toString());
+		}
+
+		_log.info(daticalDBOutput);
+		return new ActionResult(true, daticalDBOutput);
+
+	}
+
+
+
+
+}

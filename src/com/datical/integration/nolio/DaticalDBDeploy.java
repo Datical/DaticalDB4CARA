@@ -8,7 +8,7 @@ import com.nolio.platform.shared.api.NolioAction;
 		description = "This action deploys changes in the ChangeLog file to the Target Database.", 
 		category = "Datical")
 
-public class DaticalDBDeploy extends DaticalDBActionWithTarget implements NolioAction{
+public class DaticalDBDeploy extends DaticalDBActionWithTargetAndReportOutput implements NolioAction{
 
 	private static final long serialVersionUID = 1L;
 

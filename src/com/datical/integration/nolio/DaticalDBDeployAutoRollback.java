@@ -8,7 +8,7 @@ import com.nolio.platform.shared.api.NolioAction;
 		description = "This action deploys changes in the ChangeLog file to the Target Database and will Automatically Rollback to the previous state in the event of an error.", 
 		category = "Datical")
 
-public class DaticalDBDeployAutoRollback extends DaticalDBActionWithTarget implements NolioAction{
+public class DaticalDBDeployAutoRollback extends DaticalDBActionWithTargetAndReportOutput implements NolioAction{
 
 	private static final long serialVersionUID = -1750887975094218994L;
 

@@ -377,7 +377,9 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			_log.info("Waiting for Datical DB to complete.");
 			Integer returnCode = p.waitFor();
 			if (!returnCode.equals(0)) {
-				return new ActionResult(false, getDaticalDBOutput(p));
+				daticalDBOutput = getDaticalDBOutput(p);
+				_log.error(daticalDBOutput);
+				return new ActionResult(false, daticalDBOutput);
 			}
 			_log.info("Datical DB completed.");
 

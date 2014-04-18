@@ -72,7 +72,10 @@ public abstract class DaticalDBActionWithTargetAndReportOutput implements NolioA
 			_log.info("Starting Datical DB.");
 			Process p = new ProcessBuilder(daticalDBLocation, "--project", daticalDBProjectDirectory, daticalDBAction, daticalDBTargetDatabase).start();			
 			_log.info("Waiting for Datical DB to complete.");
-			p.waitFor();
+			Integer returnCode = p.waitFor();
+			if (!returnCode.equals(0)) {
+				return new ActionResult(false, getDaticalDBOutput(p));
+			}
 			_log.info("Datical DB completed.");
 			BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
@@ -101,6 +104,21 @@ public abstract class DaticalDBActionWithTargetAndReportOutput implements NolioA
 		return new ActionResult(true, daticalDBOutput);
 
 	}
+	
+	private String getDaticalDBOutput(Process p) {
+		String myOut = "";
+		BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		String line;
+		try {
+			while ((line = b.readLine()) != null) {
+				myOut = myOut + "\n" + line;
+			}
+		} catch (IOException e) {
+			_log.error(e.toString());
+		}
+		return myOut;
+	}
+
 
 
 

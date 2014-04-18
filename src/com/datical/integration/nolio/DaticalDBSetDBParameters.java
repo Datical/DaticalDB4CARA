@@ -375,7 +375,10 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			_log.info("Starting Datical DB.");
 			Process p = new ProcessBuilder(daticalDBLocation, "--project", daticalDBProjectDirectory, "newProject").start();			
 			_log.info("Waiting for Datical DB to complete.");
-			p.waitFor();
+			Integer returnCode = p.waitFor();
+			if (!returnCode.equals(0)) {
+				return new ActionResult(false, getDaticalDBOutput(p));
+			}
 			_log.info("Datical DB completed.");
 
 			_log.info("Starting Datical DB.");
@@ -384,20 +387,9 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			p2.waitFor();
 			_log.info("Datical DB completed.");
 
-
-
-
-			BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
-
-			String line;
-			while ((line = b.readLine()) != null) {
-				daticalDBOutput = daticalDBOutput + "\n" + line;
-			}
+			daticalDBOutput = getDaticalDBOutput(p);
 			
-			b = new BufferedReader(new InputStreamReader(p2.getInputStream()));
-			while ((line = b.readLine()) != null) {
-				daticalDBOutput = daticalDBOutput + "\n" + line;
-			}
+			daticalDBOutput = daticalDBOutput + "\n" + getDaticalDBOutput(p2);
 
 		} catch (IOException | InterruptedException e) {
 			_log.error(e.toString());
@@ -407,6 +399,20 @@ public class DaticalDBSetDBParameters implements NolioAction {
 
 		return new ActionResult(true, daticalDBOutput);
 
+	}
+
+	private String getDaticalDBOutput(Process p) {
+		String myOut = "";
+		BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		String line;
+		try {
+			while ((line = b.readLine()) != null) {
+				myOut = myOut + "\n" + line;
+			}
+		} catch (IOException e) {
+			_log.error(e.toString());
+		}
+		return myOut;
 	}
 
 	private boolean setParameter(String parameter) {

@@ -15,8 +15,8 @@ import com.nolio.platform.shared.api.ParameterDescriptor;
 import com.nolio.platform.shared.api.Password;
 
 @ActionDescriptor(
-		name = "Datical DB Set Project Parameters",
-		description = "This will create and set parameters for Datical DB execution. Useful for when you only have a Datical DB changelog.xml file or simply do not want to create a datical.project file using the GUI.",
+		name = "Datical DB Create DB Definition",
+		description = "This will create and set parameters for a new Datical DB execution. Useful for when you wish to add a new step to an existing Datical DB Project.",
 		category="Datical")
 
 public class DaticalDBSetDBParameters implements NolioAction {
@@ -373,7 +373,7 @@ public class DaticalDBSetDBParameters implements NolioAction {
 		String daticalDBOutput = "";
 		try {
 			_log.info("Starting Datical DB.");
-			Process p = new ProcessBuilder(daticalDBLocation, "--project", daticalDBProjectDirectory, "newProject").start();			
+			Process p = new ProcessBuilder(command).start();			
 			_log.info("Waiting for Datical DB to complete.");
 			Integer returnCode = p.waitFor();
 			if (!returnCode.equals(0)) {
@@ -383,15 +383,8 @@ public class DaticalDBSetDBParameters implements NolioAction {
 			}
 			_log.info("Datical DB completed.");
 
-			_log.info("Starting Datical DB.");
-			Process p2 = new ProcessBuilder(command).start();			
-			_log.info("Waiting for Datical DB to complete.");
-			p2.waitFor();
-			_log.info("Datical DB completed.");
-
 			daticalDBOutput = getDaticalDBOutput(p);
 			
-			daticalDBOutput = daticalDBOutput + "\n" + getDaticalDBOutput(p2);
 
 		} catch (IOException | InterruptedException e) {
 			_log.error(e.toString());

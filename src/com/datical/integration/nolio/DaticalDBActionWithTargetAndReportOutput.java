@@ -90,6 +90,7 @@ public abstract class DaticalDBActionWithTargetAndReportOutput implements NolioA
 					myLine = myLine.replaceAll("(\\r|\\n)", "");
 					daticalDBReport = myLine;
 					myLine = myLine.replace("deployReport.html", "");
+					myLine = myLine.replace("forecastReport.html", "");
 					daticalDBReportDir = myLine;
 				}
 				

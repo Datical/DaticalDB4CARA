@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.datical.integration.nolio.util.DaticalDBBinary;
 import com.nolio.platform.shared.api.ActionResult;
 import com.nolio.platform.shared.api.NolioAction;
 import com.nolio.platform.shared.api.ParameterDescriptor;
@@ -48,8 +49,32 @@ public abstract class DaticalDBActionWithTargetAndReportOutput implements NolioA
 			in = true, 
 			nullable = false, 
 			defaultValueAsString = "MyDatabase", 
-			order = 2)
+			order = 3)
 	private String daticalDBTargetDatabase = "MyDatabase";
+	
+	@ParameterDescriptor(
+			// Export SQL?
+			name = "Export SQL",
+			description = "If selected will output SQL as part of Datical DB exection.",
+			out = false,
+			in = true,
+			nullable = true,
+			defaultValueAsString = "false",
+			order = 4
+			)  
+	private Boolean daticalDBExportSQL = false;
+	
+	@ParameterDescriptor(
+			// Export SQL?
+			name = "Export Rollback SQL",
+			description = "If selected will output rollback SQL as part of Datical DB exection.",
+			out = false,
+			in = true,
+			nullable = true,
+			defaultValueAsString = "false",
+			order = 5
+			)  
+	private Boolean daticalDBExportRollbackSQL = false;
 	
 	@ParameterDescriptor(
 			name = "Datical DB Report Output", 
@@ -67,10 +92,19 @@ public abstract class DaticalDBActionWithTargetAndReportOutput implements NolioA
 	
 	public ActionResult executeAction() {
 
+		String genSQL = "";
+		if (daticalDBExportSQL) {
+			genSQL = "--genSQL";
+		}
+		String genRollbackSQL = "";
+		if (daticalDBExportRollbackSQL) {
+			genRollbackSQL = "--genRollbackSQL";
+		}
+		
 		String daticalDBOutput = "";
 		try {
 			_log.info("Starting Datical DB.");
-			Process p = new ProcessBuilder(daticalDBLocation, "--project", daticalDBProjectDirectory, daticalDBAction, daticalDBTargetDatabase).start();			
+			Process p = new ProcessBuilder(daticalDBLocation, "--project", daticalDBProjectDirectory, genSQL, genRollbackSQL, daticalDBAction, daticalDBTargetDatabase).start();			
 			_log.info("Waiting for Datical DB to complete.");
 			Integer returnCode = p.waitFor();
 			if (!returnCode.equals(0)) {

@@ -47,7 +47,7 @@ public abstract class DaticalDBRollback implements NolioAction {
 			in = true, 
 			nullable = false, 
 			defaultValueAsString = "MyDatabase", 
-			order = 2)
+			order = 3)
 	private String daticalDBDatabase = "MyDatabase";
 
 	@ParameterDescriptor(
@@ -57,15 +57,49 @@ public abstract class DaticalDBRollback implements NolioAction {
 			in = true, 
 			nullable = false, 
 			defaultValueAsString = "channgeid:id=null", 
-			order = 2)
+			order = 4)
 	private String daticalDBRollbackVersion = "channgeid:id=null";
+
+	@ParameterDescriptor(
+			// Export SQL?
+			name = "Export SQL",
+			description = "If selected will output SQL as part of Datical DB exection.",
+			out = false,
+			in = true,
+			nullable = true,
+			defaultValueAsString = "false",
+			order = 5
+			)  
+	private Boolean daticalDBExportSQL = false;
+	
+	@ParameterDescriptor(
+			// Export SQL?
+			name = "Only Export SQL",
+			description = "If selected will only output SQL and NOT perform a Rollback.",
+			out = false,
+			in = true,
+			nullable = true,
+			defaultValueAsString = "false",
+			order = 6
+			)  
+	private Boolean daticalDBOnlyExportSQL = false;
 	
 	public ActionResult executeAction() {
+		
+		String genSQL = "";
+		if (daticalDBExportSQL) {
+			genSQL = "--genSQL";
+		}
+		String onlySQL = "";
+		if (daticalDBOnlyExportSQL) {
+			onlySQL = "--onlySQL";
+		}
+		
 
 		String daticalDBOutput = "";
 		try {
 			_log.info("Starting Datical DB.");
-			Process p = new ProcessBuilder(daticalDBLocation, "--project", daticalDBProjectDirectory, "rollback", daticalDBDatabase, daticalDBRollbackVersion).start();			
+			Process p = new ProcessBuilder(daticalDBLocation, "--project", daticalDBProjectDirectory, genSQL, onlySQL, "rollback", daticalDBDatabase, daticalDBRollbackVersion).start();			
 			_log.info("Waiting for Datical DB to complete.");
 			p.waitFor();
 			_log.info("Datical DB completed.");

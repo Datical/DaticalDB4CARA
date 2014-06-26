@@ -9,16 +9,14 @@ import com.nolio.platform.shared.api.ActionResult;
 import com.nolio.platform.shared.api.NolioAction;
 import com.nolio.platform.shared.api.ParameterDescriptor;
 
-
 @ActionDescriptor(
 		name = "Datical DB Rollback", 
 		description = "This action displays the Datical DB History of a database server.", 
 		category = "Datical")
 
+public class DaticalDBRollback implements NolioAction { 	
 
-public abstract class DaticalDBRollback implements NolioAction { 	
-
-	private static final long serialVersionUID = 8716891777506609101L;
+	private static final long serialVersionUID = 7800139987392301428L;
 
 	@ParameterDescriptor(
 			name = "Datical DB Location", 

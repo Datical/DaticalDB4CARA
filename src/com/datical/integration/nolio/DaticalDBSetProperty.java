@@ -29,9 +29,9 @@ public class DaticalDBSetProperty implements NolioAction {
 			out = false, 
 			in = true, 
 			nullable = false,
-			defaultValueAsString = "C:\\DaticalDB-1.32.438\\repl\\hammer.bat", 
+			defaultValueAsString = "C:\\Program Files (x86)\\DaticalDB\\repl\\hammer.bat", 
 			order = 1)
-	private String daticalDBLocation = "C:\\DaticalDB-1.32.438\\repl\\hammer.bat";
+	private String daticalDBLocation = "C:\\Program Files (x86)\\DaticalDB\\repl\\hammer.bat";
 
 	@ParameterDescriptor(
 			name = "Datical DB Project Directory", 

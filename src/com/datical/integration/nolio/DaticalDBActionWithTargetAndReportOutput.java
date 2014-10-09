@@ -53,6 +53,16 @@ public abstract class DaticalDBActionWithTargetAndReportOutput implements NolioA
 	private String daticalDBTargetDatabase = "MyDatabase";
 	
 	@ParameterDescriptor(
+			name = "Datical DB Context", 
+			description = "The Context for the Target Database.", 
+			out = false, 
+			in = true, 
+			nullable = true, 
+			defaultValueAsString = "$all", 
+			order = 4)
+	private String daticalDBContext = "";	
+	
+	@ParameterDescriptor(
 			// Export SQL?
 			name = "Export SQL",
 			description = "If selected will output SQL as part of Datical DB exection.",
@@ -60,7 +70,7 @@ public abstract class DaticalDBActionWithTargetAndReportOutput implements NolioA
 			in = true,
 			nullable = true,
 			defaultValueAsString = "false",
-			order = 4
+			order = 5
 			)  
 	private Boolean daticalDBExportSQL = false;
 	
@@ -72,7 +82,7 @@ public abstract class DaticalDBActionWithTargetAndReportOutput implements NolioA
 			in = true,
 			nullable = true,
 			defaultValueAsString = "false",
-			order = 5
+			order = 6
 			)  
 	private Boolean daticalDBExportRollbackSQL = false;
 	
@@ -100,11 +110,16 @@ public abstract class DaticalDBActionWithTargetAndReportOutput implements NolioA
 		if (daticalDBExportRollbackSQL) {
 			genRollbackSQL = "--genRollbackSQL";
 		}
+		String contextArg = "";
+		if (daticalDBContext != null && !daticalDBContext.isEmpty()) {
+			  contextArg = "--context";
+			  daticalDBAction = "";
+		}
 		
 		String daticalDBOutput = "";
 		try {
 			_log.info("Starting Datical DB.");
-			Process p = new ProcessBuilder(daticalDBLocation, "--project", daticalDBProjectDirectory, genSQL, genRollbackSQL, daticalDBAction, daticalDBTargetDatabase).start();			
+			Process p = new ProcessBuilder(daticalDBLocation, "--project", daticalDBProjectDirectory, genSQL, genRollbackSQL, contextArg, daticalDBContext, daticalDBAction, daticalDBTargetDatabase).start();			
 			_log.info("Waiting for Datical DB to complete.");
 			Integer returnCode = p.waitFor();
 			if (!returnCode.equals(0)) {

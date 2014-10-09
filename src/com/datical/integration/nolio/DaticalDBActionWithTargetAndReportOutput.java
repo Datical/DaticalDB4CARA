@@ -113,7 +113,6 @@ public abstract class DaticalDBActionWithTargetAndReportOutput implements NolioA
 		String contextArg = "";
 		if (daticalDBContext != null && !daticalDBContext.isEmpty()) {
 			  contextArg = "--context";
-			  daticalDBAction = "";
 		}
 		
 		String daticalDBOutput = "";

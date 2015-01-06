@@ -87,6 +87,16 @@ public abstract class DaticalDBActionWithTargetAndReportOutput implements NolioA
 	private Boolean daticalDBExportRollbackSQL = false;
 	
 	@ParameterDescriptor(
+			name = "Datical DB Labels", 
+			description = "The Labels for the Change Sets to be applied.", 
+			out = false, 
+			in = true, 
+			nullable = true, 
+			defaultValueAsString = "$all", 
+			order = 7)
+	private String daticalDBLabels = "";
+	
+	@ParameterDescriptor(
 			name = "Datical DB Report Output", 
 			description = "Fully qualified Datical DB Report File Output Parameter.", 
 			out = true, 
@@ -114,11 +124,15 @@ public abstract class DaticalDBActionWithTargetAndReportOutput implements NolioA
 		if (daticalDBContext != null && !daticalDBContext.isEmpty()) {
 			  contextArg = "--context";
 		}
+		String labelArg = "";
+		if (daticalDBLabels != null && !daticalDBLabels.isEmpty()) {
+			labelArg = "--labels";
+		}
 		
 		String daticalDBOutput = "";
 		try {
 			_log.info("Starting Datical DB.");
-			Process p = new ProcessBuilder(daticalDBLocation, "--project", daticalDBProjectDirectory, genSQL, genRollbackSQL, contextArg, daticalDBContext, daticalDBAction, daticalDBTargetDatabase).start();			
+			Process p = new ProcessBuilder(daticalDBLocation, "--project", daticalDBProjectDirectory, genSQL, genRollbackSQL, labelArg, daticalDBLabels, contextArg, daticalDBContext, daticalDBAction, daticalDBTargetDatabase).start();			
 			_log.info("Waiting for Datical DB to complete.");
 			Integer returnCode = p.waitFor();
 			if (!returnCode.equals(0)) {

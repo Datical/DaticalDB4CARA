@@ -49,7 +49,7 @@ public abstract class DaticalDBActionWithTwoTargets implements NolioAction {
 			in = true, 
 			nullable = false, 
 			defaultValueAsString = "ReferenceDatabase", 
-			order = 2)
+			order = 3)
 	private String daticalDBReferenceDatabase = "ReferenceDatabase";
 	
 
@@ -60,15 +60,31 @@ public abstract class DaticalDBActionWithTwoTargets implements NolioAction {
 			in = true, 
 			nullable = false, 
 			defaultValueAsString = "TargetDatabase", 
-			order = 2)
+			order = 4)
 	private String daticalDBTargetDatabase = "TargetDatabase";
 	
+	@ParameterDescriptor(
+			name = "Datical DB Labels", 
+			description = "The Labels for the Change Sets to be applied.", 
+			out = false, 
+			in = true, 
+			nullable = true, 
+			defaultValueAsString = "$all", 
+			order = 5)
+	private String daticalDBLabels = "";
+	
+	
 	public ActionResult executeAction() {
+		
+		String labelArg = "";
+		if (daticalDBLabels != null && !daticalDBLabels.isEmpty()) {
+			labelArg = "--labels";
+		}
 
 		String daticalDBOutput = "";
 		try {
 			_log.info("Starting Datical DB.");
-			Process p = new ProcessBuilder(daticalDBLocation, "--project", daticalDBProjectDirectory, daticalDBAction, daticalDBReferenceDatabase, daticalDBTargetDatabase).start();			
+			Process p = new ProcessBuilder(daticalDBLocation, "--project", daticalDBProjectDirectory, labelArg, daticalDBLabels, daticalDBAction, daticalDBReferenceDatabase, daticalDBTargetDatabase).start();			
 			_log.info("Waiting for Datical DB to complete.");
 			Integer returnCode = p.waitFor();
 			if (!returnCode.equals(0)) {

@@ -78,7 +78,7 @@ public abstract class DaticalDBActionWithTwoTargets implements NolioAction {
 		
 		String labelArg = "";
 		if (daticalDBLabels != null && !daticalDBLabels.isEmpty()) {
-			labelArg = "--labels";
+			labelArg = "--assignLabels";
 		}
 
 		String daticalDBOutput = "";
